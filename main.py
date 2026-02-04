@@ -38,14 +38,14 @@ def start(message):
     teks = """
 Halo 👋
 
-Selamat datang di Bot Pencarian.
+Selamat datang di Bot Pencarian BBCS Reborn
 
-Ketik kata apa saja untuk mencari judul yang kamu butuhkan.
+Cukup Ketik ID video disini
 
 Contoh:
-dtf
-sablon
-printer
+1234
+5678
+9101
 """
     bot.reply_to(message, teks)
 
