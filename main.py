@@ -10,6 +10,12 @@ TOKEN = os.getenv("TOKEN")
 SHEET_CSV_URL = os.getenv("SHEET_CSV_URL")
 bot = telebot.TeleBot(TOKEN)
 
+
+if not TOKEN:
+    raise ValueError("TOKEN tidak terbaca")
+if not SHEET_CSV_URL:
+    raise ValueError("SHEET_CSV_URL tidak terbaca")
+
 # ================== CACHE ==================
 data_cache = []
 
