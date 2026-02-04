@@ -36,16 +36,12 @@ threading.Thread(target=update_sheet, daemon=True).start()
 @bot.message_handler(commands=['start'])
 def start(message):
     teks = """
-Halo 👋
-
-Selamat datang di Bot Pencarian BBCS Reborn
-
-Cukup Ketik ID video disini
+*Halo Braderkuu* 👋
+Selamat datang di Bot Pencarian *BBCS Reborn*
+Cukup Ketik *ID* video disini
 
 Contoh:
-1234
-5678
-9101
+_1234_
 """
     bot.reply_to(message, teks)
 
