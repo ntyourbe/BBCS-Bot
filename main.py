@@ -51,7 +51,12 @@ def start(message):
         "Jangan lupa gabung grub\n"
         "https://t.me/+XBiM2t3a6-JlMzk1"
     )
-    bot.reply_to(message, teks, parse_mode="Markdown")
+    bot.reply_to(
+    message,
+    teks,
+    parse_mode="Markdown",
+    disable_web_page_preview=True
+)
 
 @bot.message_handler(func=lambda message: True)
 def auto_search(message):
@@ -75,8 +80,12 @@ def auto_search(message):
             f"<b>ID : {item.get('judul','Tanpa Judul')}</b>\n"
             f"<a href='{item.get('link','#')}'>Buka Link</a>"
         )
-        bot.send_message(message.chat.id, teks, parse_mode="HTML")
-
+        bot.send_message(
+    message.chat.id,
+    teks,
+    parse_mode="HTML",
+    disable_web_page_preview=True
+)
 # ================== RUN ==================
 print("Bot berjalan...")
 bot.infinity_polling(skip_pending=True)
