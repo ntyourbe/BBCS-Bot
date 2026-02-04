@@ -43,7 +43,7 @@ Cukup Ketik *ID* video disini
 Contoh:
 _1234_
 """
-    bot.reply_to(message, teks)
+    bot.reply_to(message, teks, parse_mode="Markdown")
 
 @bot.message_handler(func=lambda message: True)
 def auto_search(message):
