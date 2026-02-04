@@ -56,7 +56,7 @@ def auto_search(message):
     query = message.text.lower().strip()
 
     if not data_cache:
-        bot.reply_to(message, "⏳ Data masih dimuat, coba lagi sebentar.")
+        bot.reply_to(message, "😋 Data masih dimuat, coba lagi sebentar.")
         return
 
     hasil = []
@@ -65,12 +65,12 @@ def auto_search(message):
             hasil.append(item)
 
     if not hasil:
-        bot.reply_to(message, "❌ Data tidak ditemukan.")
+        bot.reply_to(message, "😭 Data tidak ditemukan.")
         return
 
     for item in hasil[:10]:  # batasi 10 hasil biar aman
         teks = (
-            f"<b>{item.get('judul','Tanpa Judul')}</b>\n"
+            f"<b>ID : {item.get('judul','Tanpa Judul')}</b>\n"
             f"<a href='{item.get('link','#')}'>Buka Link</a>"
         )
         bot.send_message(message.chat.id, teks, parse_mode="HTML")
