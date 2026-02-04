@@ -18,14 +18,14 @@ def update_sheet():
     global data_cache
     while True:
         try:
-            print("Mengambil data dari Sheet...")
+            print("Mengambil data dari Database...")
             response = requests.get(SHEET_CSV_URL, timeout=10)
             f = StringIO(response.text)
             reader = csv.DictReader(f)
             data_cache = list(reader)
-            print("Sheet diperbarui")
+            print("Database diperbarui")
         except Exception as e:
-            print("Gagal ambil sheet:", e)
+            print("Gagal ambil database:", e)
 
         time.sleep(300)  # 5 menit
 
