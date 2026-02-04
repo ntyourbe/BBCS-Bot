@@ -6,8 +6,13 @@ import os
 import time
 import threading
 
-TOKEN = os.getenv("8594506540:AAEnBB3Y5akMdnvsR2l6jRbkUyJDln-SHuc")
-SHEET_CSV_URL = os.getenv("https://docs.google.com/spreadsheets/d/e/2PACX-1vTOEOwGunpJbJJJX8jxy9OMjOcQGkPXlvdAzkuVdsYsLjmN_ClXTT3g7SK-7_9Fqkt8LYmbB6FfVdOC/pub?output=csv")
+# ================== ENV ==================
+TOKEN = os.getenv("BOT_TOKEN")
+SHEET_CSV_URL = os.getenv("SHEET_CSV_URL")
+
+if not TOKEN or not SHEET_CSV_URL:
+    raise ValueError("BOT_TOKEN atau SHEET_CSV_URL belum diset di Environment Variables")
+
 bot = telebot.TeleBot(TOKEN)
 
 # ================== CACHE ==================
@@ -17,16 +22,19 @@ def update_sheet():
     global data_cache
     while True:
         try:
-            print("Mengambil data dari Database...")
-            response = requests.get(SHEET_CSV_URL, timeout=10)
+            print("Mengambil data dari Google Sheet...")
+            response = requests.get(SHEET_CSV_URL, timeout=15)
+            response.raise_for_status()
+
             f = StringIO(response.text)
             reader = csv.DictReader(f)
             data_cache = list(reader)
-            print("Database diperbarui")
+
+            print(f"Database diperbarui ({len(data_cache)} data)")
         except Exception as e:
             print("Gagal ambil database:", e)
 
-        time.sleep(300)  # 5 menit
+        time.sleep(300)  # update tiap 5 menit
 
 threading.Thread(target=update_sheet, daemon=True).start()
 
@@ -34,14 +42,13 @@ threading.Thread(target=update_sheet, daemon=True).start()
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    teks = """
-*Halo Braderkuu* 👋
-Selamat datang di Bot Pencarian *BBCS Reborn*
-Cukup Ketik *ID* video disini
-
-Contoh:
-_1234_
-"""
+    teks = (
+        "*Halo Braderkuu* 👋\n"
+        "Selamat datang di Bot Pencarian *BBCS Reborn*\n\n"
+        "Cukup ketik *ID / Judul* video di sini\n\n"
+        "Contoh:\n"
+        "_1234_"
+    )
     bot.reply_to(message, teks, parse_mode="Markdown")
 
 @bot.message_handler(func=lambda message: True)
@@ -49,20 +56,25 @@ def auto_search(message):
     query = message.text.lower().strip()
 
     if not data_cache:
-        bot.reply_to(message, "Data masih dimuat, coba lagi beberapa detik.")
+        bot.reply_to(message, "⏳ Data masih dimuat, coba lagi sebentar.")
         return
 
     hasil = []
     for item in data_cache:
-        if query in item['judul'].lower():
+        if query in item.get('judul', '').lower():
             hasil.append(item)
 
     if not hasil:
-        bot.reply_to(message, "Data tidak ditemukan.")
+        bot.reply_to(message, "❌ Data tidak ditemukan.")
         return
 
-    for item in hasil:
-        teks = f"<b>{item['judul']}</b>\n<a href='{item['link']}'>Buka Link</a>"
+    for item in hasil[:10]:  # batasi 10 hasil biar aman
+        teks = (
+            f"<b>{item.get('judul','Tanpa Judul')}</b>\n"
+            f"<a href='{item.get('link','#')}'>Buka Link</a>"
+        )
         bot.send_message(message.chat.id, teks, parse_mode="HTML")
 
-bot.infinity_polling()
+# ================== RUN ==================
+print("Bot berjalan...")
+bot.infinity_polling(skip_pending=True)
