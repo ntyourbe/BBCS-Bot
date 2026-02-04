@@ -47,8 +47,7 @@ def start(message):
         "Selamat datang di Bot Pencarian *BBCS Reborn*\n\n"
         "Cukup ketik *ID / Judul* video di sini\n\n"
         "Contoh:\n"
-        "_1234_"
-        ""
+        "_1234_\n\n"
         "Jangan lupa gabung grub https://t.me/bbcsreal"
     )
     bot.reply_to(message, teks, parse_mode="Markdown")
