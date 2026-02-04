@@ -48,7 +48,8 @@ def start(message):
         "Cukup ketik *ID / Judul* video di sini\n\n"
         "Contoh:\n"
         "_1234_\n\n"
-        "Jangan lupa gabung grub https://t.me/bbcsreal"
+        "Jangan lupa gabung grub\n"
+        "https://t.me/+XBiM2t3a6-JlMzk1"
     )
     bot.reply_to(message, teks, parse_mode="Markdown")
 
