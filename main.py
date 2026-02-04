@@ -6,15 +6,9 @@ import os
 import time
 import threading
 
-TOKEN = os.getenv("TOKEN")
-SHEET_CSV_URL = os.getenv("SHEET_CSV_URL")
+TOKEN = os.getenv("8594506540:AAEnBB3Y5akMdnvsR2l6jRbkUyJDln-SHuc")
+SHEET_CSV_URL = os.getenv("https://docs.google.com/spreadsheets/d/e/2PACX-1vTOEOwGunpJbJJJX8jxy9OMjOcQGkPXlvdAzkuVdsYsLjmN_ClXTT3g7SK-7_9Fqkt8LYmbB6FfVdOC/pub?output=csv")
 bot = telebot.TeleBot(TOKEN)
-
-
-if not TOKEN:
-    raise ValueError("TOKEN tidak terbaca")
-if not SHEET_CSV_URL:
-    raise ValueError("SHEET_CSV_URL tidak terbaca")
 
 # ================== CACHE ==================
 data_cache = []
