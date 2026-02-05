@@ -77,15 +77,15 @@ def auto_search(message):
         bot.reply_to(message, "😭 Data tidak ditemukan.")
         return
 
-    for item in hasil[:10]:
+for item in hasil[:10]:
     judul = item.get('judul', 'Tanpa Judul')
     link = item.get('link', '#')
 
-    teks = f"ID : <b>{judul}</b>"
+    teks = f"🎬 <b>{judul}</b>"
 
-    keyboard = InlineKeyboardMarkup()
+    keyboard = types.InlineKeyboardMarkup()
     keyboard.add(
-        InlineKeyboardButton("BUKA LINK", url=link)
+        types.InlineKeyboardButton("🔗 BUKA VIDEO", url=link)
     )
 
     bot.send_message(
