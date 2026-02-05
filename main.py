@@ -1,11 +1,12 @@
 import telebot
+from telebot import types
 import requests
 import csv
 from io import StringIO
 import os
 import time
 import threading
-from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
+
 
 # ================== ENV ==================
 TOKEN = os.getenv("BOT_TOKEN")
