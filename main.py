@@ -19,6 +19,9 @@ bot = telebot.TeleBot(TOKEN)
 
 # ================== CACHE ==================
 data_cache = []
+# ================== ANTI SPAM ==================
+last_user = {}
+FLOOD_DELAY = 2  # detik
 
 def update_sheet():
     global data_cache
@@ -62,6 +65,16 @@ def start(message):
 
 @bot.message_handler(func=lambda message: True)
 def auto_search(message):
+    uid = message.from_user.id
+    now = time.time()
+
+    # === ANTI FLOOD ===
+    if uid in last_user and now - last_user[uid] < FLOOD_DELAY:
+        return
+
+    last_user[uid] = now
+    # ==================
+
     query = message.text.lower().strip()
 
     if not data_cache:
