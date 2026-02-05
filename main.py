@@ -5,6 +5,8 @@ from io import StringIO
 import os
 import time
 import threading
+from telebot.types
+import InlineKeyboardMarkup, InlineKeyboardButton
 
 # ================== ENV ==================
 TOKEN = os.getenv("BOT_TOKEN")
@@ -75,17 +77,23 @@ def auto_search(message):
         bot.reply_to(message, "😭 Data tidak ditemukan.")
         return
 
-    for item in hasil[:10]:  # batasi 10 hasil biar aman
-        teks = (
-            f"<b>ID : {item.get('judul','Tanpa Judul')}</b>\n"
-            f"<a href='{item.get('link','#')}'>Buka Link</a>"
-        )
-        bot.send_message(
-    message.chat.id,
-    teks,
-    parse_mode="HTML",
-    disable_web_page_preview=True
-)
+    for item in hasil[:10]:
+    judul = item.get('judul', 'Tanpa Judul')
+    link = item.get('link', '#')
+
+    teks = f"ID : <b>{judul}</b>"
+
+    keyboard = InlineKeyboardMarkup()
+    keyboard.add(
+        InlineKeyboardButton("BUKA LINK", url=link)
+    )
+
+    bot.send_message(
+        message.chat.id,
+        teks,
+        parse_mode="HTML",
+        reply_markup=keyboard
+    )
 # ================== RUN ==================
 print("Bot berjalan...")
 bot.infinity_polling(skip_pending=True)
