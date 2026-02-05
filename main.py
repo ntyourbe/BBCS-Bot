@@ -47,7 +47,7 @@ def start(message):
     teks = (
         "*Halo Braderkuu* 👋\n"
         "Selamat datang di Bot Pencarian *BBCS Reborn*\n\n"
-        "Cukup ketik *ID / Judul* video di sini\n\n"
+        "Cukup ketik *ID* video di sini\n\n"
         "Contoh:\n"
         "_1234_\n\n"
         "Jangan lupa gabung grub\n"
@@ -81,11 +81,11 @@ def auto_search(message):
         judul = item.get('judul', 'Tanpa Judul')
         link = item.get('link', '#')
 
-        teks = f"ID <b>{judul}</b>"
+        teks = f"ID : <b>{judul}</b>"
 
         keyboard = types.InlineKeyboardMarkup()
         keyboard.add(
-            types.InlineKeyboardButton("🔗 BUKA LINK", url=link)
+            types.InlineKeyboardButton("BUKA LINK", url=link)
         )
 
         bot.send_message(
