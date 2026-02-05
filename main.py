@@ -36,7 +36,7 @@ def update_sheet():
         except Exception as e:
             print("Gagal ambil database:", e)
 
-        time.sleep(300)  # update tiap 5 menit
+        time.sleep(300)
 
 threading.Thread(target=update_sheet, daemon=True).start()
 
@@ -54,11 +54,11 @@ def start(message):
         "https://t.me/+XBiM2t3a6-JlMzk1"
     )
     bot.reply_to(
-    message,
-    teks,
-    parse_mode="Markdown",
-    disable_web_page_preview=True
-)
+        message,
+        teks,
+        parse_mode="Markdown",
+        disable_web_page_preview=True
+    )
 
 @bot.message_handler(func=lambda message: True)
 def auto_search(message):
@@ -77,23 +77,24 @@ def auto_search(message):
         bot.reply_to(message, "😭 Data tidak ditemukan.")
         return
 
-for item in hasil[:10]:
-    judul = item.get('judul', 'Tanpa Judul')
-    link = item.get('link', '#')
+    for item in hasil[:10]:
+        judul = item.get('judul', 'Tanpa Judul')
+        link = item.get('link', '#')
 
-    teks = f"🎬 <b>{judul}</b>"
+        teks = f"ID <b>{judul}</b>"
 
-    keyboard = types.InlineKeyboardMarkup()
-    keyboard.add(
-        types.InlineKeyboardButton("🔗 BUKA VIDEO", url=link)
-    )
+        keyboard = types.InlineKeyboardMarkup()
+        keyboard.add(
+            types.InlineKeyboardButton("🔗 BUKA LINK", url=link)
+        )
 
-    bot.send_message(
-        message.chat.id,
-        teks,
-        parse_mode="HTML",
-        reply_markup=keyboard
-    )
+        bot.send_message(
+            message.chat.id,
+            teks,
+            parse_mode="HTML",
+            reply_markup=keyboard
+        )
+
 # ================== RUN ==================
 print("Bot berjalan...")
 bot.infinity_polling(skip_pending=True)
