@@ -23,6 +23,11 @@ GROUPS = [
         "name": "BBCS REBORN",
         "link": "https://t.me/+XBiM2t3a6-JlMzk1"
     }
+    {
+        "id": -1003883822593,
+        "name": "DONGHUA SUB INDO",
+        "link": "https://t.me/+5Jy_jkyvPqQ1YTU1"
+    }
 ]
 
 def is_user_joined(user_id):
