@@ -22,7 +22,7 @@ GROUPS = [
         "id": -1003759776336,
         "name": "BBCS REBORN",
         "link": "https://t.me/+XBiM2t3a6-JlMzk1"
-    }
+    },
     {
         "id": -1003883822593,
         "name": "DONGHUA SUB INDO",
