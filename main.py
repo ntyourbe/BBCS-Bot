@@ -7,7 +7,6 @@ import os
 import time
 import threading
 
-
 # ================== ENV ==================
 TOKEN = os.getenv("BOT_TOKEN")
 SHEET_CSV_URL = os.getenv("SHEET_CSV_URL")
@@ -17,16 +16,14 @@ if not TOKEN or not SHEET_CSV_URL:
 
 bot = telebot.TeleBot(TOKEN)
 
-
 # ================== FORCE JOIN ==================
 GROUPS = [
     {
-        "id": -1003759776336,  # GANTI DENGAN ID GRUP KAMU
+        "id": -1003759776336,
         "name": "BBCS REBORN",
         "link": "https://t.me/+XBiM2t3a6-JlMzk1"
     }
 ]
-
 
 def is_user_joined(user_id):
     for group in GROUPS:
@@ -38,14 +35,12 @@ def is_user_joined(user_id):
             return False
     return True
 
-
 # ================== CACHE ==================
 data_cache = []
 
-# ================== ANTI SPAM ==================
+# ================== ANTI FLOOD ==================
 last_user = {}
-FLOOD_DELAY = 2  # detik
-
+FLOOD_DELAY = 2
 
 def update_sheet():
     global data_cache
@@ -65,23 +60,14 @@ def update_sheet():
 
         time.sleep(300)
 
-
 threading.Thread(target=update_sheet, daemon=True).start()
 
-# ================== BOT ==================
-
+# ================== START ==================
 @bot.message_handler(commands=['start'])
 def start(message):
     user_id = message.from_user.id
 
     if not is_user_joined(user_id):
-        teks = (
-            "🚫 <b>Akses Ditolak</b>\n\n"
-            "Selamat datang di Bot Pencarian <b>BBCS Reborn</b>\n\n"
-            "Kamu wajib join grup di bawah ini dulu sebelum menggunakan bot 👇\n\n"
-            "Setelah join, klik tombol <b>✅ Saya sudah join</b>"
-        )
-
         keyboard = types.InlineKeyboardMarkup(row_width=1)
 
         for group in GROUPS:
@@ -93,110 +79,89 @@ def start(message):
             )
 
         keyboard.add(
-            types.InlineKeyboardButton(
-                "✅ Saya sudah join",
-                callback_data="cek_join"
-            )
+            types.InlineKeyboardButton("✅ Saya sudah join", callback_data="cek_join")
         )
 
         bot.send_message(
             message.chat.id,
-            teks,
+            "🚫 <b>Akses Ditolak</b>\n\n"
+            "Kamu wajib join grup di bawah ini dulu sebelum menggunakan bot 👇",
             parse_mode="HTML",
             reply_markup=keyboard
         )
         return
 
-    teks = (
-        "*Halo Braderkuu* 👋\n"
-        "Selamat datang di Bot Pencarian *BBCS Reborn*\n\n"
-        "Cukup ketik *ID* video di sini\n\n"
-        "Contoh:\n"
-        "_1234_"
-    )
-
     bot.send_message(
         message.chat.id,
-        teks,
-        parse_mode="Markdown",
-        disable_web_page_preview=True
+        "*Halo Braderkuu* 👋\n"
+        "Ketik *ID* video untuk mencari",
+        parse_mode="Markdown"
     )
 
-
+# ================== CEK JOIN ==================
 @bot.callback_query_handler(func=lambda call: call.data == "cek_join")
 def cek_join(call):
-    user_id = call.from_user.id
-
-    if is_user_joined(user_id):
+    if is_user_joined(call.from_user.id):
         bot.edit_message_text(
-            "✅ Verifikasi berhasil!\n\nSekarang kamu bisa menggunakan bot 🎉\n\n"
-            "Silakan ketik *ID* video.",
+            "✅ Verifikasi berhasil!\nSekarang kamu bisa menggunakan bot 🎉",
             call.message.chat.id,
-            call.message.message_id,
-            parse_mode="Markdown"
+            call.message.message_id
         )
     else:
-        bot.answer_callback_query(
-            call.id,
-            "❌ Kamu belum join semua grup!",
-            show_alert=True
-        )
+        bot.answer_callback_query(call.id, "❌ Masih belum join semua grup!", show_alert=True)
 
+# ================== CEK ID GRUP / CHANNEL ==================
+@bot.message_handler(commands=['id'])
+def cek_id(message):
+    chat = message.chat
+    teks = (
+        f"🆔 <b>INFO CHAT</b>\n\n"
+        f"Nama : {chat.title}\n"
+        f"ID : <code>{chat.id}</code>\n"
+        f"Tipe : {chat.type}"
+    )
 
+    bot.reply_to(message, teks, parse_mode="HTML")
+
+# ================== SEARCH ==================
 @bot.message_handler(func=lambda message: True)
 def auto_search(message):
     user_id = message.from_user.id
-
-    if not is_user_joined(user_id):
-        bot.reply_to(
-            message,
-            "🚫 Kamu belum join grup.\nGunakan /start untuk join dulu."
-        )
-        return
-
-    uid = message.from_user.id
     now = time.time()
 
-    # === ANTI FLOOD ===
-    if uid in last_user and now - last_user[uid] < FLOOD_DELAY:
+    if not is_user_joined(user_id):
+        bot.reply_to(message, "🚫 Join grup dulu, lalu /start")
         return
 
-    last_user[uid] = now
-    # ==================
+    if user_id in last_user and now - last_user[user_id] < FLOOD_DELAY:
+        return
+
+    last_user[user_id] = now
 
     query = message.text.lower().strip()
 
     if not data_cache:
-        bot.reply_to(message, "😋 Data masih dimuat, coba lagi sebentar.")
+        bot.reply_to(message, "⏳ Data masih dimuat...")
         return
 
-    hasil = []
-    for item in data_cache:
-        if query in item.get('judul', '').lower():
-            hasil.append(item)
+    hasil = [i for i in data_cache if query in i.get("judul", "").lower()]
 
     if not hasil:
-        bot.reply_to(message, "😭 Data tidak ditemukan.")
+        bot.reply_to(message, "❌ Data tidak ditemukan")
         return
 
     for item in hasil[:10]:
-        judul = item.get('judul', 'Tanpa Judul')
-        link = item.get('link', '#')
-
-        teks = f"ID : <b>{judul}</b>"
-
         keyboard = types.InlineKeyboardMarkup()
         keyboard.add(
-            types.InlineKeyboardButton("BUKA LINK", url=link)
+            types.InlineKeyboardButton("🔗 BUKA LINK", url=item.get("link", "#"))
         )
 
         bot.send_message(
             message.chat.id,
-            teks,
+            f"🎬 <b>{item.get('judul','Tanpa Judul')}</b>",
             parse_mode="HTML",
             reply_markup=keyboard
         )
-
 
 # ================== RUN ==================
 print("Bot berjalan...")
