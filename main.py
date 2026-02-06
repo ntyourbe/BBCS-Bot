@@ -77,6 +77,7 @@ def start(message):
     if not is_user_joined(user_id):
         teks = (
             "🚫 <b>Akses Ditolak</b>\n\n"
+            "Selamat datang di Bot Pencarian <b>BBCS Reborn</b>\n\n"
             "Kamu wajib join grup di bawah ini dulu sebelum menggunakan bot 👇\n\n"
             "Setelah join, klik tombol <b>✅ Saya sudah join</b>"
         )
@@ -86,7 +87,7 @@ def start(message):
         for group in GROUPS:
             keyboard.add(
                 types.InlineKeyboardButton(
-                    f"🔗 Join {group['name']}",
+                    f"Join {group['name']}",
                     url=group["link"]
                 )
             )
