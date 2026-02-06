@@ -62,7 +62,13 @@ def start(message):
         parse_mode="Markdown",
         disable_web_page_preview=True
     )
-
+@bot.message_handler(commands=['id'])
+def get_id(message):
+    bot.reply_to(
+        message,
+        f"🆔 Chat ID:\n<code>{message.chat.id}</code>",
+        parse_mode="HTML"
+    )
 @bot.message_handler(func=lambda message: True)
 def auto_search(message):
     uid = message.from_user.id
