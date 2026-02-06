@@ -84,12 +84,12 @@ def start(message):
             )
 
         keyboard.add(
-            types.InlineKeyboardButton("✅ Saya sudah join", callback_data="cek_join")
+            types.InlineKeyboardButton("✅ SAYA SUDAH JOIN", callback_data="cek_join")
         )
 
         bot.send_message(
             message.chat.id,
-            "🚫 <b>Akses Ditolak</b>\n\n"
+            "<b>Halo Braderkuu 👋</b>\n\n"
             "Kamu wajib join grup di bawah ini dulu sebelum menggunakan bot 👇",
             parse_mode="HTML",
             reply_markup=keyboard
@@ -135,7 +135,7 @@ def auto_search(message):
     now = time.time()
 
     if not is_user_joined(user_id):
-        bot.reply_to(message, "🚫 Join grup dulu, lalu /start")
+        bot.reply_to(message, "🚫 Join grup dulu, klik /start")
         return
 
     if user_id in last_user and now - last_user[user_id] < FLOOD_DELAY:
@@ -158,12 +158,12 @@ def auto_search(message):
     for item in hasil[:10]:
         keyboard = types.InlineKeyboardMarkup()
         keyboard.add(
-            types.InlineKeyboardButton("🔗 BUKA LINK", url=item.get("link", "#"))
+            types.InlineKeyboardButton("BUKA LINK", url=item.get("link", "#"))
         )
 
         bot.send_message(
             message.chat.id,
-            f"🎬 <b>{item.get('judul','Tanpa Judul')}</b>",
+            f"ID : <b>{item.get('judul','Tanpa Judul')}</b>",
             parse_mode="HTML",
             reply_markup=keyboard
         )
