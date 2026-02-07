@@ -108,7 +108,7 @@ def start(message):
 def cek_join(call):
     if is_user_joined(call.from_user.id):
         bot.edit_message_text(
-            "✅ Verifikasi berhasil!\nSekarang kamu bisa menggunakan bot 🎉",
+            "✅ Verifikasi berhasil!\nSekarang kamu bisa menggunakan bot 🎉\n Ketik ID Video untuk mencari..",
             call.message.chat.id,
             call.message.message_id
         )
