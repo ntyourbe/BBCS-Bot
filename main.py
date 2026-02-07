@@ -107,7 +107,7 @@ def start(message):
         message.chat.id,
         "*Halo Braderkuu* 👋\n"
         "Ketik *ID* video untuk mencari",
-        parse_mode="Markdown"
+        parse_mode="Markdown",
         reply_markup=main_menu()
     )
 
