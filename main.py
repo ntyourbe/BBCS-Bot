@@ -16,6 +16,13 @@ if not TOKEN or not SHEET_CSV_URL:
 
 bot = telebot.TeleBot(TOKEN)
 
+# ================== MENU ==================
+def main_menu():
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    keyboard.add("🔍 Cari")
+    keyboard.add("ℹ️ Bantuan", "📢 Channel")
+    return keyboard
+
 # ================== FORCE JOIN ==================
 GROUPS = [
     {
@@ -101,6 +108,7 @@ def start(message):
         "*Halo Braderkuu* 👋\n"
         "Ketik *ID* video untuk mencari",
         parse_mode="Markdown"
+        reply_markup=main_menu()
     )
 
 # ================== CEK JOIN ==================
@@ -127,6 +135,34 @@ def cek_id(message):
     )
 
     bot.reply_to(message, teks, parse_mode="HTML")
+
+# ================= MENU ===================== 
+@bot.message_handler(func=lambda m: m.text == "🔍 Cari")
+def menu_cari(message):
+    bot.send_message(
+        message.chat.id,
+        "🔎 Silakan ketik *ID* video yang ingin dicari",
+        parse_mode="Markdown"
+    )
+    
+@bot.message_handler(func=lambda m: m.text == "ℹ️ Bantuan")
+def menu_bantuan(message):
+    bot.send_message(
+        message.chat.id,
+        "ℹ️ *Panduan*\n\n"
+        "- Join grup dulu\n"
+        "- Ketik ID video\n"
+        "- Bot akan menampilkan hasil",
+        parse_mode="Markdown"
+    )
+
+@bot.message_handler(func=lambda m: m.text == "📢 Channel")
+def menu_channel(message):
+    bot.send_message(
+        message.chat.id,
+        "📢 Channel resmi:\nhttps://t.me/xxxxx",
+        disable_web_page_preview=True
+    )
 
 # ================== SEARCH ==================
 @bot.message_handler(func=lambda message: True)
