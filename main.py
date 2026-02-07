@@ -183,6 +183,6 @@ def auto_search(message):
             )
 # ================== RUN ==================
 print("Bot berjalan...")
-bot.remove_webhook(drop_pending_updates=True)
+bot.remove_webhook()
 time.sleep(2)
 bot.infinity_polling(skip_pending=True)
