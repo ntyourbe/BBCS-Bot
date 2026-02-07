@@ -20,7 +20,7 @@ bot = telebot.TeleBot(TOKEN)
 def main_menu():
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.add("🔍 Cari")
-    keyboard.add("ℹ️ Bantuan", "📢 Channel")
+    keyboard.add("ℹ️ Bantuan", "📢 Group")
     return keyboard
 
 # ================== FORCE JOIN ==================
@@ -116,7 +116,9 @@ def start(message):
 def cek_join(call):
     if is_user_joined(call.from_user.id):
         bot.edit_message_text(
-            "✅ Verifikasi berhasil!\nSekarang kamu bisa menggunakan bot 🎉\n Ketik ID Video untuk mencari..",
+            "✅ Verifikasi berhasil!\n"
+            "Sekarang kamu bisa menggunakan bot 🎉\n"
+            "Silahkan restart bot klik /start",
             call.message.chat.id,
             call.message.message_id
         )
@@ -156,11 +158,11 @@ def menu_bantuan(message):
         parse_mode="Markdown"
     )
 
-@bot.message_handler(func=lambda m: m.text == "📢 Channel")
-def menu_channel(message):
+@bot.message_handler(func=lambda m: m.text == "📢 Group")
+def menu_group(message):
     bot.send_message(
         message.chat.id,
-        "📢 Channel resmi:\nhttps://t.me/xxxxx",
+        "📢 Group resmi:\nhttps://t.me/+XBiM2t3a6-JlMzk1",
         disable_web_page_preview=True
     )
 
