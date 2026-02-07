@@ -156,18 +156,31 @@ def auto_search(message):
         return
 
     for item in hasil[:10]:
+        judul = item.get("judul", "Tanpa Judul")
+        link = item.get("link", "#")
+        gambar = item.get("gambar")  # 🔥 TAMBAHAN
+
         keyboard = types.InlineKeyboardMarkup()
         keyboard.add(
-            types.InlineKeyboardButton("BUKA LINK", url=item.get("link", "#"))
+            types.InlineKeyboardButton("BUKA LINK", url=link)
         )
 
-        bot.send_message(
-            message.chat.id,
-            f"ID : <b>{item.get('judul','Tanpa Judul')}</b>",
-            parse_mode="HTML",
-            reply_markup=keyboard
-        )
-
+        # ====== KIRIM GAMBAR JIKA ADA ======
+        if gambar:
+            bot.send_photo(
+                message.chat.id,
+                photo=gambar,
+                caption=f"ID : <b>{judul}</b>",
+                parse_mode="HTML",
+                reply_markup=keyboard
+            )
+        else:
+            bot.send_message(
+                message.chat.id,
+                f"ID : <b>{judul}</b>",
+                parse_mode="HTML",
+                reply_markup=keyboard
+            )
 # ================== RUN ==================
 print("Bot berjalan...")
 bot.infinity_polling(skip_pending=True)
